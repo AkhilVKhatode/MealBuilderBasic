@@ -1,54 +1,55 @@
-# Custom Meal Order with Builder Design Pattern
+# Custom Meal Order Builder (Builder Pattern in Python)
 
-This repository demonstrates the use of the **Builder Design Pattern** to create custom meal orders. The Builder pattern allows for the construction of complex objects (in this case, a meal) step by step, making it easy to add different items to the meal in any sequence.
+A clean implementation of the Builder design pattern for constructing custom meal orders with flexible options.
 
-## Problem Statement
+## Overview
 
-In this example, we are building a system for customizing meal orders. Each meal consists of various items, such as:
-- Burger
-- Drink
-- Side dish
+This project demonstrates how to use the Builder Pattern to create customizable meal orders where:
+- You can select only the options you care about
+- The construction process is clean and intuitive
+- The code is easy to extend with new options
 
-Using the Builder Design Pattern, we can create a custom meal by adding specific items in a fluent and flexible manner.
+## Features
 
-## Components
+- Build meals with any combination of:
+  - Burgers (with optional size specification)
+  - Toppings (multiple can be added)
+  - Drinks (with optional size specification)
+  - Side items
+- Fluent builder interface for easy chaining
+- Clear string representation of the final meal
 
-### `Meal` Class
-The `Meal` class represents a meal that consists of multiple items. It includes:
-- A list (`items`) to hold the items in the meal.
-- `add_item` method to add an item to the meal.
-- `display_meal` method to print the meal's contents.
-
-### `MealBuilder` Class
-The `MealBuilder` class acts as a builder for the `Meal` object. It provides methods to add various items to the meal:
-- `add_burger`: Adds a burger to the meal (e.g., Chicken or Veggie).
-- `add_drink`: Adds a drink to the meal (e.g., Coke, Orange Juice).
-- `add_side`: Adds a side dish to the meal (e.g., Fries).
-
-The `build` method returns the constructed meal object.
-
-## Usage Example
-
-```python
-meal_builder = MealBuilder()
-custom_meal = meal_builder.add_burger("Chicken").add_drink("Coke").add_side("Fries").build()
-custom_meal.display_meal()
-
-meal_builder2 = MealBuilder()
-meal2 = meal_builder2.add_burger("Veggie").add_drink("Orange Juice").build()
-meal2.display_meal()
+## Usage
 ```
-Example Output:
-Meal:
-- Chicken Burger
-- Coke
-- Fries
+from meal_builder import MealBuilder
 
-Meal:
-- Veggie Burger
-- Orange Juice
+# Simple meal with just a burger
+meal1 = MealBuilder().add_burger("Cheeseburger").build()
 
-Benefits of the Builder Pattern
-- Separation of Construction and Representation: The MealBuilder class handles meal construction, while the Meal class represents the final product.
-- Fluent API: The builder provides a fluent interface, allowing for chaining method calls (e.g., add_burger("Chicken").add_drink("Coke")).
-- Flexible Meal Construction: You can easily create different combinations of meals by adding only the items you want.
+# Complete meal with all options
+meal2 = (MealBuilder()
+         .add_burger("Bacon Burger")
+         .with_size("Large")
+         .add_topping("Lettuce")
+         .add_topping("Tomato")
+         .add_drink("Cola")
+         .with_size("Medium")
+         .add_side("Fries")
+         .build())
+
+# Meal with only some options
+meal3 = (MealBuilder()
+         .add_burger("Veggie Burger")
+         .add_topping("Avocado")
+         .add_drink("Lemonade")
+         .build())
+
+print(meal1)
+print(meal2)
+print(meal3)
+```
+
+Example Output
+- Cheeseburger
+- Large Bacon Burger with Lettuce, Tomato + Medium Cola + Fries
+- Veggie Burger with Avocado + Lemonade
